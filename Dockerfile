@@ -1,7 +1,7 @@
 FROM php:8.2-cli
 
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev \
+    git curl zip unzip libpng-dev libonig-dev libxml2-ext \
     && docker-php-ext-install pdo pdo_mysql mbstring
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -9,4 +9,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
-CMD php -S 0.0.0.0:${PORT:-8000} -t public
+CMD bash -c "php artisan migrate --force 2>&1 && echo 'Migrations done' && php -S 0.0.0.0:${PORT:-8000} -t public"
