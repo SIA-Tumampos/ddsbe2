@@ -11,4 +11,4 @@ COPY . .
 
 RUN rm -rf vendor && composer install --no-dev 2>&1
 
-CMD bash -c "php artisan migrate:fresh --force 2>&1 && echo 'Migrations done' && php -S 0.0.0.0:${PORT:-8000} -t public"
+CMD bash -c "php artisan migrate --force 2>&1 && echo 'Migrations done' && php -S 0.0.0.0:8080 -t public"
